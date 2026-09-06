@@ -1,0 +1,39 @@
+{
+  "name": "@aghlimi/next-middleware-chain",
+  "version": "1.0.0",
+  "description": "A tiny middleware-chain utility for Next.js request proxies.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "prepublishOnly": "pnpm build"
+  },
+  "keywords": [
+    "nextjs",
+    "middleware",
+    "typescript",
+    "proxy"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Aghlimi/nextjs-middleware.git"
+  },
+  "peerDependencies": {
+    "next": ">=16"
+  },
+  "devDependencies": {
+    "next": "^16.0.0",
+    "typescript": "^5.9.2"
+  }
+}
