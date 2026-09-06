@@ -1,4 +1,4 @@
-import { middleware_map } from "./MiddlewareMap";
+import { middleware_map } from "./Middleware";
 import { MiddlewareFunction } from "./types";
 
 export function getMiddlewares(path: string): MiddlewareFunction[] {

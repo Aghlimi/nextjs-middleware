@@ -22,22 +22,23 @@ export class Middleware {
         middleware_map.set(middleware, this);
     }
 
-    public startWith(path: string): Middleware {
+    // builder methods
+    public forPath(path: string): Middleware {
         this.startWithPath = path;
         return this;
     }
 
-    public exact(path: string): Middleware {
+    public forPrefix(path: string): Middleware {
         this.exactPath = path;
         return this;
     }
 
-    public except(path: string): Middleware {
+    public exclude(path: string): Middleware {
         this.exceptionExactPath = path;
         return this;
     }
 
-    public exceptStartWith(path: string): Middleware {
+    public excludePrefix(path: string): Middleware {
         this.exceptionStartWith = path;
         return this;
     }
@@ -47,6 +48,7 @@ export class Middleware {
         return this;
     }
 
+    // help methods
     private normalize(path: string): string {
         const normalized = path.replace(/\/+$/, "");
         return normalized || "/";
@@ -61,6 +63,7 @@ export class Middleware {
             this.normalize(path1).startsWith(this.normalize(path2) + "/")
     }
 
+    // matching methods
     private isGlobal() {
         return this.is_global;
     }

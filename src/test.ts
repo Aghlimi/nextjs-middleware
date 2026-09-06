@@ -5,6 +5,9 @@ import { getMiddlewares } from "./getMiddleware";
 setMiddleware(async (request: NextRequest, next: ()  => Promise<NextResponse | void>) => {
     console.log("hello")
     next();
-}).exact("/api");
-
+}).forPath("/api");
+setMiddleware(async (request: NextRequest, next: ()  => Promise<NextResponse | void>) => {
+    console.log("hello")
+    next();
+}).forPrefix("/auth");
 console.log(getMiddlewares("/api"));
