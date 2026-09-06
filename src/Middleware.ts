@@ -5,11 +5,11 @@ export const middleware_map = new Map<MiddlewareFunction, Middleware>();
 export class Middleware {
     public middleware!: MiddlewareFunction;
 
-    private startWithPath: string | null = null;
-    private exactPath: string | null = null;
+    private PathPrefix: string[] = [];
+    private Path: string[] = [];
 
-    private exceptionStartWith: string | null = null;
-    private exceptionExactPath: string | null = null;
+    private excludePrefixPath: string[] = [];
+    private excludePath: string[] = [];
 
     private is_global: boolean = false;
 
@@ -24,22 +24,22 @@ export class Middleware {
 
     // builder methods
     public forPrefix(path: string): Middleware {
-        this.startWithPath = path;
+        this.PathPrefix.push(path);
         return this;
     }
 
     public forPath(path: string): Middleware {
-        this.exactPath = path;
+        this.Path.push(path);
         return this;
     }
 
     public exclude(path: string): Middleware {
-        this.exceptionExactPath = path;
+        this.excludePath.push(path);
         return this;
     }
 
     public excludePrefix(path: string): Middleware {
-        this.exceptionStartWith = path;
+        this.excludePrefixPath.push(path);
         return this;
     }
 
@@ -70,34 +70,31 @@ export class Middleware {
         return this.is_global;
     }
 
-    private matchesExceptStartWith(path: string): boolean {
-        return this.exceptionStartWith !== null &&
-            this.pathStartWith(path, this.exceptionStartWith);
+    private matchexcludePrefix(path: string): boolean {
+        return this.excludePrefixPath.some((prefix) => this.pathStartWith(path, prefix));
     }
 
-    private matchesExceptExact(path: string): boolean {
-        return this.exceptionExactPath !== null &&
-            this.pathEqualPath(path, this.exceptionExactPath);
+    private matcheExclude(path: string): boolean {
+        return this.excludePath.some((exact) =>
+            this.pathEqualPath(path, exact));
     }
 
-    private matchStartWith(path: string): boolean {
-        return this.startWithPath !== null &&
-            this.pathStartWith(path, this.startWithPath);
+    private matchForPrefix(path: string): boolean {
+        return this.PathPrefix.some((prefix) => this.pathStartWith(path, prefix));
     }
 
-    private matchExact(path: string): boolean {
-        return this.exactPath !== null &&
-            this.pathEqualPath(path, this.exactPath);
+    private matchForPath(path: string): boolean {
+        return this.Path.some((exact) => this.pathEqualPath(path, exact));
     }
 
     public matches(path: string): boolean {
         if (
-            this.matchesExceptExact(path) ||
-            this.matchesExceptStartWith(path))
+            this.matcheExclude(path) ||
+            this.matchexcludePrefix(path))
             return false;
 
         if (this.isGlobal()) return true;
 
-        return this.matchExact(path) || this.matchStartWith(path);
+        return this.matchForPath(path) || this.matchForPrefix(path);
     }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@aghlimi/next-middleware-chain",
-  "version": "2.1.0",
+  "version": "2.2.1",
   "description": "A tiny middleware-chain utility for Next.js request proxies.",
   "type": "module",
   "main": "./dist/index.js",
