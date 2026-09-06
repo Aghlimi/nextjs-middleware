@@ -23,12 +23,12 @@ export class Middleware {
     }
 
     // builder methods
-    public forPath(path: string): Middleware {
+    public forPrefix(path: string): Middleware {
         this.startWithPath = path;
         return this;
     }
 
-    public forPrefix(path: string): Middleware {
+    public forPath(path: string): Middleware {
         this.exactPath = path;
         return this;
     }
@@ -59,8 +59,10 @@ export class Middleware {
     }
 
     private pathStartWith(path1: string, path2: string): boolean {
-        return this.pathEqualPath(path1, path2) ||
-            this.normalize(path1).startsWith(this.normalize(path2) + "/")
+        const normalized_path1 = this.normalize(path1);
+        const normalized_path2 = this.normalize(path2);
+        return normalized_path1 === normalized_path2 ||
+            normalized_path1.startsWith(normalized_path2 + "/")
     }
 
     // matching methods
